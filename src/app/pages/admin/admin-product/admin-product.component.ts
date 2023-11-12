@@ -37,23 +37,23 @@ export class AdminProductComponent {
     name: [null, [Validators.required]],
     image: [null, [Validators.required]],
     author: [null, [Validators.required]],
-    price: [null, [Validators.required]],
-    discount: [0],
+    price: [0 ,[Validators.required,Validators.pattern(/^[0-9]*$/)]],
+    discount: [0 ,[Validators.required,Validators.pattern(/^[0-9]*$/)]],
     description: [null, [Validators.required]],
     categoryId: [null, [Validators.required]],
   })
 
   handleSubmit = () => {
-    this.isMatch = true
+    this.isMatch = true  
     if (this.formValue.valid) {
       this.productNew = {
-        name: this.formValue.value.name || this.productSelected.name,
-        image: this.formValue.value.image || this.productSelected.image,
-        author: this.formValue.value.author || this.productSelected.author,
-        price: this.formValue.value.price || this.productSelected.price,
-        discount: this.formValue.value.discount || this.productSelected.discount,
-        description: this.formValue.value.description || this.productSelected.description,
-        categoryId: this.formValue.value.categoryId || this.productSelected.categoryId,
+        name: this.formValue.value.name,
+        image: this.formValue.value.image,
+        author: this.formValue.value.author,
+        price: this.formValue.value.price,
+        discount: this.formValue.value.discount,
+        description: this.formValue.value.description,
+        categoryId: this.formValue.value.categoryId,
       }
       if (this.modalSetting == 1) {
         this.productService.create(this.productNew).subscribe((resp) => {
@@ -77,7 +77,6 @@ export class AdminProductComponent {
       this.isMatch = false
     }
 
-    this.productSelected = null
   }
 
   
@@ -104,7 +103,6 @@ export class AdminProductComponent {
   handleModalCreate = () => {
     this.productSelected =  {
       discount: 0,
-      _id: "",
       name: "",
       description: "",
       image: "",

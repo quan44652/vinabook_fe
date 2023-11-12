@@ -256,8 +256,14 @@
               class="text-red-600"
               *ngIf="formValue.get('price')?.hasError('required') && isMatch"
             >
-              Trường này không được để trống.
+            Trường này không được để trống.
             </div>
+            <div
+            class="text-red-600"
+            *ngIf="formValue.get('price')?.hasError('pattern') &&  isMatch"
+          >
+          Trường này không hợp lệ.
+          </div>
           </div>
           <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-black"
@@ -273,10 +279,16 @@
             />
             <div
               class="text-red-600"
-              *ngIf="formValue.get('price')?.hasError('required') && isMatch"
+              *ngIf="formValue.get('discount')?.hasError('required') &&  isMatch"
             >
-              Trường này không được để trống.
+            Trường này không được để trống.
             </div>
+            <div
+            class="text-red-600"
+            *ngIf="formValue.get('discount')?.hasError('pattern') &&  isMatch"
+          >
+          Trường này không hợp lệ.
+          </div>
           </div>
           <div class="mb-6">
             <label
@@ -304,7 +316,7 @@
             </div>
           </div>
           
-          <div *ngIf="categoryList" class="mb-6">
+          <div  class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-black"
               >Danh mục</label
             >
@@ -318,27 +330,12 @@
               <option
                 class="py-[12px] font-[300]"
                 *ngFor="let item of categoryList"
-                [value]="item._id"
-              >
-                {{ item.name }}
-              </option>
-            </select>
-            <select
-
-            
-            *ngIf="!productSelected"
-              formControlName="categoryId"
-              class="bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option value disabled>Chọn danh mục</option>
-              <option
-                class="py-[12px] font-[300]"
-                *ngFor="let item of categoryList"
                 [value]="item?._id"
               >
                 {{ item?.name }}
               </option>
             </select>
+          
             <div
               class="text-red-600"
               *ngIf="
