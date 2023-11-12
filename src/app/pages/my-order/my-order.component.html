@@ -1,0 +1,42 @@
+<div class="flex items-center justify-center my-[24px]">
+    <img src="../../../assets/images/vnb_logo_2x.png" alt="" />
+  </div>
+  <div class="border-b-[1px] shadow-sm shadow-gray-500">
+    <div class="w-[1200px] m-auto mb-[100px]">
+      <h1 class="text-center font-[600] text-[24px] text-[#117c47] mb-[24px]">Đơn hàng của bạn</h1>
+      <div class="">
+        <div *ngFor="let order of orderList" class="border-[1px] rounded border-[#ececec] mr-[32px] p-[32px]">
+          <h4 class="text-[20px] text-[#117c47] mb-[24px] font-[500]">Đơn hàng ngày {{order.createdAt}}</h4>
+          <h6 class="text-[16px] text-[#117c47] mb-[24px] font-[500]">Trạng thái: {{status[order.status]}}</h6>
+          <div *ngFor="let item of order.cartItems" class="flex justify-between mb-[12px]">
+            <a routerLink="/product/{{item.bookId._id}}" class="w-[50px] h-[100px]  overflow-hidden">
+                <img class="w-full"
+                  [src]="item.bookId.image"
+                  alt="" />
+              </a>
+              <div class="flex-1 ml-[24px]">
+                <h6 class="text-[#66645c] max-w-[500px] text-[14px] font-[400]">
+                {{item.bookId.name}}
+                </h6>
+
+              </div>
+              <div class="flex flex-col items-end">
+                <p class="text-[#66645c] font-[600]"><span>{{item.quantity}}</span> x <span>  {{item.bookId.price / 100 * (100 - item.bookId.discount) | number}}đ</span></p>
+               
+              </div>
+          
+          </div>
+        </div>
+      </div>
+  
+  
+      <div class="flex items-center justify-center mt-[24px]">
+        <a routerLink="/"><button
+            class="min-w-[256px] py-[12px] bg-[#cecdcd] text-white mx-[12px] rounded text-[18px] font-[500]">Quay
+            lại</button></a>
+      </div>
+    </div>
+  </div>
+
+  
+  <app-footer />

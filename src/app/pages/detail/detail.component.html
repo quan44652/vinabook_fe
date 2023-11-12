@@ -1,0 +1,199 @@
+<div>
+  <app-top-page />
+  <app-header />
+  <app-navbar />
+  <div class="w-[1200px] mx-auto my-[50px]">
+    <div class="flex">
+      <div class="min-w-[250px]">
+        <img [src]="product?.image" alt="" />
+      </div>
+      <div class="ml-[30px] mr-[50px]">
+        <h1 class="text-[24px] font-[300] text-[#404040] mb-[16px]">
+          {{ product?.name }}
+        </h1>
+        <p class="text-[14px] font-[400]">
+          Tác giả: <span class="text-[#087b39]">{{ product?.author }}</span>
+        </p>
+        <p class="text-[14px] font-[400]">
+          Nhà xuất bản:
+          <span class="text-[#087b39]">{{ product?.author }}</span>
+        </p>
+        <p class="text-[14px] font-[400] mb-[24px]">
+          Nhà phát hành:
+          <span class="text-[#087b39]">{{ product?.author }}</span>
+        </p>
+
+        <p class="mr-[50px] text-[16px]">{{ product?.description }}</p>
+      </div>
+      <div
+        class="min-w-[300px] h-[240px] rounded border-[1px] border-[gray] p-[24px]"
+      >
+        <h3
+          class="font-[500] text-[20px] border-dashed border-b-[1px] border-[gray] pb-[12px]"
+        >
+          Thông tin thanh toán
+        </h3>
+        <div
+          class="border-dashed border-b-[1px] border-[gray] py-[12px] flex items-center justify-between"
+        >
+          <span class="text-[18px]">Giá bán</span>
+          <span class="text-[20px] text-red-600"
+            >{{
+              (product?.price / 100) * (100 - product.discount) | number
+            }}
+            đ</span
+          >
+        </div>
+        <button
+          (click)="handleShowModal()"
+          class="block w-full border-[1px] bg-yellow-600 my-[16px] py-[4px] rounded text-white hover:bg-yellow-700"
+        >
+          Mua ngay
+        </button>
+        <button
+        (click)="handleAddToCart()"
+          class="block w-full border-[1px] bg-yellow-600 py-[4px] rounded text-white hover:bg-yellow-700"
+        >
+          Thêm vào giỏ hàng
+        </button>
+      </div>
+    </div>
+    <div class="mt-[50px]">
+      <h2 class="text-[20px] mb-[32px] text-[#008340]">
+        Nhận xét từ khách hàng
+      </h2>
+      <div>
+        <form [formGroup]="formValueFeedback" (submit)="handleSearch()" action="">
+          <textarea
+          formControlName="content"
+            class="border-[1px] border-[gray] outline-none p-[12px]"
+            cols="70"
+            rows="8"
+            placeholder="Nhập nội dung"
+          >
+          </textarea>
+          <br />
+          <button class="px-[34px] py-[8px] text-white rounded bg-[#008340]">
+            Gửi đánh giá
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-[32px]">
+      <div *ngFor="let item of product.feedbacks" class="mb-[12px]">
+        <h4 class="font-[500]">Khách hàng: {{item.userId.name}}</h4>
+        <p>Nội dung: {{item.content}}</p>
+      </div>
+    </div>
+  </div>
+  <app-footer-social></app-footer-social>
+  <app-footer />
+</div>
+
+<div
+  *ngIf="isShowModal"
+  class="fixed top-0 left-0 right-0 bottom-0 bg-[#00000070]"
+>
+  <div class="flex items-center justify-center h-full">
+    <div class="bg-white w-[600px] rounded overflow-hidden relative">
+      <span
+        (click)="handleClose()"
+        class="cursor-pointer absolute right-[12px] top-[6px]"
+      >
+        <fa-icon class="text-white hover:text-red-600" [icon]="closeIcon" />
+      </span>
+      <h1 class="pl-[24px] py-[12px] bg-[#087b44] text-white text-[18px]">
+        Sản phẩm
+      </h1>
+      <div class="flex justify-between my-[24px] mx-[24px]">
+        <div class="w-[45px] h-[63px] overflow-hidden">
+          <img
+            [src]="product?.image"
+            alt=""
+          />
+        </div>
+        <div class="flex-1 ml-[24px]">
+          <h6 class="text-[#66645c] max-w-[500px] text-[14px] font-[400]">
+            {{product?.name}}
+          </h6>
+          <div>
+            <button
+            (click)="handleBot()"
+              class="px-[12px] py-[1px] rounded border-[1px] min-w-[32px]"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              disabled
+              [value]="quantity"
+              class="mx-[6px] w-[40px] pl-[12px] rounded bg-[#eeeeee]"
+            />
+            <button
+            (click)="handleThem()"
+              class="px-[12px] py-[1px] rounded border-[1px] min-w-[32px]"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div class="flex flex-col items-end">
+          <p class="text-[#66645c] font-[600]">
+            <span>{{quantity}}</span> x <span>{{product.price / 100 * (100 - product.discount) | number}}đ</span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="w-full border-[1px] rounded overflow-hidden mt-[32px]">
+          <h2 class="pl-[24px] py-[8px] text-[16px] text-white bg-[#117c47]">
+            Thông tin khách hàng
+          </h2>
+          <div class="p-[24px]">
+            <div class="flex justify-between flex-col">
+              <label class="mr-[12px]">Họ tên</label>
+              <input
+              [(ngModel)]="user.name"
+                class="flex-1 border-[1px] border-[gray] border-solid rounded pl-[12px]"
+                type="text"
+                placeholder="Tên người nhận"
+              />
+            </div>
+
+            <div class="flex justify-between flex-col">
+              <label class="mr-[12px]">Số điện thoại</label>
+              <input
+              [(ngModel)]="user.phone"
+                class="flex-1 border-[1px] border-[gray] border-solid rounded pl-[12px]"
+                type="text"
+                placeholder="Số điện thoại người nhận"
+              />
+            </div>
+
+            <div class="flex justify-between flex-col">
+              <label class="mr-[12px]">Địa chỉ nhận hàng</label>
+              <textarea
+              [(ngModel)]="user.address"
+                name=""
+                id=""
+                cols="10"
+                rows="5"
+                class="flex-1 border-[1px] border-[gray] border-solid rounded pl-[12px]"
+                placeholder="Địa chỉ nhận hàng"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="my-[12px] flex items-center justify-end mx-[24px]">
+        <button (click)="handleClose()" class="px-[12px] py-[4px] rounded bg-red-600 text-white">
+            Hủy
+          </button>
+        
+        <button (click)="handleOrder()" class="px-[12px] py-[4px] rounded bg-yellow-600 ml-[12px] text-white">
+          Thanh toán
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div>
+    {{ categoryList | json}}
+    <ul class="border-[1px] border-[#ccc] min-w-[270px] pt-[6px]">
+        <li *ngFor="let item of categoryList,let i = index" class="py-[4px] pl-[18px] font-[300] leading-[32px] border-[#cccccc64] w-full border-b-[1px] "><a
+                class="flex items-center justify-between cursor-pointer" routerLink='/category/{{item._id}}'><span>{{item.name}}</span> <fa-icon
+                    class="text-[#929292] mr-[18px]" [icon]="arrowIcon"></fa-icon></a></li>
+    </ul>
+</div>

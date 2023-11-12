@@ -1,0 +1,275 @@
+<div class="flex m-auto w-[1200px] justify-between items-center my-[24px]">
+  <div>
+    <a routerLink="/">
+      <img
+        src="https://www.vinabook.com/images/thumbnails/img/252/33/vnb_logo_2x.png"
+        alt
+    /></a>
+  </div>
+  <div class="relative">
+    <form
+    (submit)="handleSearch()"
+    [formGroup]="formValueSearch"
+      class="w-[588px] h-[40px] bg-[#f3f3f3] rounded-[999px] flex items-center relative"
+      action
+    >
+      <input
+      formControlName="search"
+        placeholder="Tìm kiếm tựa sách, tác giả"
+        class="w-full font-[300] text-[18px] bg-transparent outline-none pl-[24px]"
+        type="text"
+      />
+      <button
+       
+        class="min-w-[100px] bg-[#057a45] mr-[12px] text-[#fff] font-[300] rounded-[999px] py-[4px]"
+      >
+        Tìm sách
+      </button>
+    </form>
+  
+    <div *ngIf="productList?.length > 0"
+      class="absolute w-full bg-white h-[500px] rounded border overflow-scroll cursor-pointer"
+    >
+    <span
+    (click)="handleModalSearch()"
+    class="cursor-pointer absolute text-red-600 px-[12px] py-[4px] rounded-[50%] bg-[#ccc] z-50 right-[12px] top-[12px]"
+  >
+    <fa-icon class="text-red-600 hover:text-red-600" [icon]="closeIcon" />
+  </span>
+      <a href="/product/{{item._id}}" *ngFor="let item of productList"
+        class="flex px-[16px] my-[12px] border-b-[1px] border-solid border-gray-300"
+      >
+        <div  class="h-[66px] w-[40px]">
+          <img
+            class="w-full h-full"
+            [src]="item.image"
+            alt=""
+          />
+        </div>
+        <div class="ml-[24px]">
+          <h2 class="font-[500]">{{item.name}}</h2>
+          <h4>Tác giả: <span>{{item.author}}</span></h4>
+          <h6><span>{{item.price / 100 * (100 - item.discount) | number}} đ</span> - <del *ngIf="item.discount > 0">{{item.price}} đ</del></h6>
+        </div>
+      </a>
+     
+    </div>
+    <div *ngIf="productList?.length == 0"
+      class="absolute w-full bg-white h-[100px] rounded border  cursor-pointer"
+    >
+    <span
+    (click)="handleModalSearch()"
+    class="cursor-pointer absolute text-red-600 px-[12px] py-[4px] rounded-[50%] bg-[#ccc] z-50 right-[12px] top-[12px]"
+  >
+    <fa-icon class="text-red-600 hover:text-red-600" [icon]="closeIcon" />
+  </span>
+     <h4 class="m-[24px]">Không có sản phẩm nào</h4>
+     
+    </div>
+  </div>
+  <div class="flex items-center">
+    <a
+      routerLink="/cart"
+      class="mr-[32px] w-[40px] h-[40px] flex items-center justify-center border-[#057a45] border-[1px] rounded-[999px]"
+    >
+      <fa-icon class="text-[#057a45]" [icon]="cartIcon"></fa-icon>
+    </a>
+    <div *ngIf="!isUser" class="text-[18px] font-[300]">
+      <span (click)="handleShowSignup()" class="cursor-pointer">Đăng ký</span>
+      <span class="mx-[8px]">|</span>
+      <span (click)="handleShowSignin()" class="cursor-pointer">Đăng nhập</span>
+    </div>
+    <div *ngIf="isUser">
+      <span class="text-[14px] font-[500]">{{ isUser.data.name }}</span>
+      <span class="mx-[8px]">|</span>
+      <span (click)="handleLogout()" class="text-[16px] cursor-pointer"
+        >Đăng xuất</span
+      >
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="isShowModal > 0"
+  class="fixed top-0 left-0 right-0 bottom-0 bg-[#00000070]"
+>
+  <div class="flex items-center justify-center h-full">
+    <div
+      *ngIf="isShowModal == 1"
+      class="bg-white w-[600px] rounded overflow-hidden relative"
+    >
+      <span
+        (click)="handleClose()"
+        class="cursor-pointer absolute right-[12px] top-[6px]"
+      >
+        <fa-icon class="text-white hover:text-red-600" [icon]="closeIcon" />
+      </span>
+      <h1 class="pl-[24px] py-[12px] bg-[#087b44] text-white text-[18px]">
+        Đăng nhập
+      </h1>
+      <form [formGroup]="formSigninValue" action="" class="mx-[50px] mb-[50px]">
+        <div class="flex items-center mt-[32px]">
+          <label class="mr-[32px] min-w-[60px]">Email</label>
+          <input
+            formControlName="email"
+            type="text"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSigninValue.get('email')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+
+        <div class="flex items-center mt-[24px]">
+          <label class="mr-[32px] min-w-[60px]">Mật khẩu</label>
+          <input
+            formControlName="password"
+            type="password"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="
+            formSigninValue.get('password')?.hasError('required') && isMatch
+          "
+        >
+          Trường này không được để trống.
+        </div>
+        <button
+          (click)="handleSignin()"
+          class="text-[16px] px-[24px] py-[8px] ml-[90px] text-white bg-[#24890b] rounded mt-[12px]"
+        >
+          Đăng nhập
+        </button>
+        <p class="ml-[90px] mt-[12px]">
+          Chưa có tài khoản vui lòng
+          <span
+            (click)="handleShowSignup()"
+            class="text-[16px] text-[#24890b] cursor-pointer"
+          >
+            Đăng kí</span
+          >
+        </p>
+      </form>
+    </div>
+    <div
+      *ngIf="isShowModal == 2"
+      class="bg-white w-[600px] rounded overflow-hidden relative"
+    >
+      <span
+        (click)="handleClose()"
+        class="cursor-pointer absolute right-[12px] top-[6px]"
+      >
+        <fa-icon class="text-white hover:text-red-600" [icon]="closeIcon" />
+      </span>
+      <h1 class="pl-[24px] py-[12px] bg-[#087b44] text-white text-[18px]">
+        Đăng nhập
+      </h1>
+      <form [formGroup]="formSignupValue" action="" class="mx-[50px] mb-[50px]">
+        <div class="flex items-center mt-[32px]">
+          <label class="mr-[32px] min-w-[100px]">Họ và tên</label>
+          <input
+            formControlName="name"
+            type="text"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSignupValue.get('name')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+        <div class="flex items-center mt-[32px]">
+          <label class="mr-[32px] min-w-[100px]">Email</label>
+          <input
+            formControlName="email"
+            type="text"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSignupValue.get('name')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+        <div class="flex items-center mt-[24px]">
+          <label class="mr-[32px] min-w-[100px]">Mật khẩu</label>
+          <input
+            formControlName="password"
+            type="password"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded password-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSignupValue.get('name')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+        <div class="flex items-center mt-[32px]">
+          <label class="mr-[32px] min-w-[100px]">Nhập lại mật khẩu</label>
+          <input
+            formControlName="confirmPassword"
+            type="password"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSignupValue.get('name')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+        <div class="flex items-center mt-[24px]">
+          <label class="mr-[32px] min-w-[100px]">Số điện thoại</label>
+          <input
+            formControlName="phone"
+            type="text"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSignupValue.get('name')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+        <div class="flex items-center mt-[24px]">
+          <label class="mr-[32px] min-w-[100px]">Địa chỉ</label>
+          <input
+            formControlName="address"
+            type="text"
+            class="h-[38px] border-[1px] border-[gray] border-solid flex-1 rounded text-[16px] pl-[12px]"
+          />
+        </div>
+        <div
+          class="text-red-600 text-end"
+          *ngIf="formSignupValue.get('name')?.hasError('required') && isMatch"
+        >
+          Trường này không được để trống.
+        </div>
+
+        <button
+          (click)="handleSignup()"
+          class="text-[16px] px-[24px] py-[8px] ml-[130px] text-white bg-[#24890b] rounded mt-[12px]"
+        >
+          Đăng ký
+        </button>
+        <p class="ml-[130px] mt-[12px]">
+          Đã có tài khoản?<span
+            (click)="handleShowSignin()"
+            class="text-[16px] text-[#24890b] cursor-pointer"
+          >
+            Đăng nhập</span
+          >
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

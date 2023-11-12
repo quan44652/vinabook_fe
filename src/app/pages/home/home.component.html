@@ -1,0 +1,42 @@
+<div>
+    <app-top-page />
+    <app-header />
+    <app-navbar/>
+    <div class="flex w-[1200px] m-auto">
+        <ul *ngIf="categoryList" class="border-[1px] border-[#ccc] min-w-[270px] pt-[6px]">
+            <li *ngFor="let item of categoryList,let i = index" class="py-[4px] pl-[18px] font-[300] leading-[32px] border-[#cccccc64] w-full border-b-[1px] "><a
+                    class="flex items-center justify-between cursor-pointer" routerLink='/category/{{item?._id}}'><span>{{item?.name}}</span> <fa-icon
+                        class="text-[#929292] mr-[18px]" [icon]="arrowIcon"></fa-icon></a></li>
+        </ul>
+       <div class="flex-1">
+        <div class="flex-1">
+            <div *ngIf="productsList" class="grid grid-cols-3 gap-3">
+                <a *ngIf="productsList[0]" routerLink="product/{{productsList[0]?._id}}" class="row-span-2 col-span-2">
+                    <img class="w-full h-[373px]" [src]="productsList[0]?.image" alt="Lỗi hiển thị">
+                </a>
+                <a *ngIf="productsList[1]" routerLink="product/{{productsList[1]?._id}}">
+                    <img class="w-full h-[186px]" [src]="productsList[1]?.image" alt="Lỗi hiển thị">
+                </a>
+                <a *ngIf="productsList[2]" routerLink="product/{{productsList[2]?._id}}">
+                    <img class="w-full h-[186px]" [src]="productsList[2]?.image" alt="Lỗi hiển thị">
+                </a>
+               
+                <a *ngIf="productsList[3]" routerLink="product/{{productsList[3]?._id}}">
+                    <img class="w-full h-[190px]" [src]="productsList[3]?.image" alt="Lỗi hiển thị">
+                </a>
+               
+                <a *ngIf="productsList[4]" routerLink="product/{{productsList[4]?._id}}">
+                    <img class="w-full h-[190px]" [src]="productsList[4]?.image" alt="Lỗi hiển thị">
+                </a>
+               
+                <a *ngIf="productsList[5]" routerLink="product/{{productsList[5]?._id}}">
+                    <img class="w-full h-[190px]" [src]="productsList[5]?.image" alt="Lỗi hiển thị">
+                </a>       
+            </div>
+        </div>
+       </div>
+    </div>
+    <app-footer-social></app-footer-social>
+    <app-footer />
+
+</div>

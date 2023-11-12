@@ -1,0 +1,95 @@
+<div class="flex items-center justify-center my-[24px]">
+  <img src="../../../assets/images/vnb_logo_2x.png" alt="" />
+</div>
+<div class="border-b-[1px] shadow-sm shadow-gray-500">
+  <div class="w-[1200px] m-auto mb-[100px]">
+    <h1 class="text-center font-[600] text-[24px] text-[#117c47] mb-[24px]">Giỏ hàng</h1>
+    <div class="flex">
+      <div class="flex-1 border-[1px] rounded border-[#ececec] mr-[32px] p-[32px]">
+        <h4 class="text-[20px] text-[#117c47] mb-[24px] font-[500]">Sản phẩm</h4>
+        <div *ngFor="let item of cartList.cartItems" class="flex justify-between mb-[12px]">
+          <a routerLink="/product/{{item.bookId._id}}" class="w-[50px] h-[100px]  overflow-hidden">
+            <img class="w-full"
+              [src]="item.bookId.image"
+              alt="" />
+          </a>
+          <div class="flex-1 ml-[24px]">
+            <h6 class="text-[#66645c] max-w-[500px] text-[14px] font-[400]">
+            {{item.bookId.name}}
+            </h6>
+            <div>
+              <button (click)="handleBot(item.bookId._id,item.quantity , item.bookId.price / 100 * (100 - item.bookId.discount))" class="px-[12px] py-[1px] rounded border-[1px] min-w-[32px]">-</button>
+              <input type="number" disabled [value]="item.quantity" class="mx-[6px] w-[40px] pl-[12px] rounded bg-[#eeeeee]">
+              <button (click)="handleThem(item.bookId._id,item.quantity , item.bookId.price / 100 * (100 - item.bookId.discount))" class="px-[12px] py-[1px] rounded border-[1px] min-w-[32px]">+</button>
+            </div>
+          </div>
+          <div class="flex flex-col items-end">
+            <p class="text-[#66645c] font-[600]"><span>{{item.quantity}}</span> x <span>  {{item.bookId.price / 100 * (100 - item.bookId.discount) | number}}đ</span></p>
+            <fa-icon   (click)="handleRemove(item.bookId._id)" class="text-[#d3d3d3] cursor-pointer text-[16px] hover:text-red-600" [icon]="trashCan" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="w-[350px] border-[1px] rounded h-[230px] overflow-hidden">
+          <h2 class="text-center py-[8px] text-[16px] text-white bg-[#117c47]">Tóm tắt đơn hàng</h2>
+          <div class="p-[24px]">
+            <div class="flex justify-between">
+              <span>Sản phẩm</span>
+              <span>{{totalQuantity|number}}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Phí vận chuyển</span>
+              <span>Miễn phí</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="uppercase font-[500] text-[#66645c]">Tạm tính</span>
+              <span class="text-[#117c47] text-[500]">{{totalPrice|number}} ₫</span>
+            </div>
+            <span class="block pt-[6px] pb-[8px] text-[12px] text-end">(Đã bao gồm phí VAT và phí đóng gói cơ
+              bản)</span>
+            <div class="border-t-[1px] flex justify-between pt-[14px]">
+              <span class="text-[16px] font-[500] text-[#66645c]">Tổng cộng</span>
+              <span class="text-[16px] font-[500] text-[#66645c]">{{totalPrice|number}} đ</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="w-[350px] border-[1px] rounded overflow-hidden mt-[32px]">
+            <h2 class="text-center py-[8px] text-[16px] text-white bg-[#117c47]">Thông tin khách hàng</h2>
+            <div class="p-[24px]">
+              <div class="flex justify-between flex-col">
+                <label class="mr-[12px]">Họ tên</label>
+                <input [value]="user.name" class="flex-1 border-[1px] border-[gray] border-solid rounded pl-[12px]" type="text"
+                  placeholder="Tên người nhận">
+              </div>
+
+              <div class="flex justify-between flex-col">
+                <label class="mr-[12px]">Số điện thoại</label>
+                <input [value]="user.phone" class="flex-1 border-[1px] border-[gray] border-solid rounded pl-[12px]" type="text"
+                  placeholder="Số điện thoại người nhận">
+              </div>
+
+              <div class="flex justify-between flex-col">
+                <label class="mr-[12px]">Họ tên</label>
+                <textarea [value]="user.address" name="" id="" cols="10" rows="5"
+                  class="flex-1 border-[1px] border-[gray] border-solid rounded pl-[12px]"
+                  placeholder="Địa chỉ nhận hàng"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="flex items-center justify-center mt-[24px]">
+      <a routerLink="/"><button
+          class="min-w-[256px] py-[12px] bg-[#cecdcd] text-white mx-[12px] rounded text-[18px] font-[500]">Quay
+          lại</button></a>
+      <button (click)="handleOrder()" class="min-w-[256px] py-[12px] text-white bg-[#fdc92d] mx-[12px] rounded text-[18px] font-[500]">
+          Thanh toán</button>
+    </div>
+  </div>
+</div>
+
+<app-footer />

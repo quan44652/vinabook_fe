@@ -1,0 +1,54 @@
+<div>
+    <app-top-page />
+    <app-header />
+    <app-navbar/>
+    <div class="flex w-[1200px] m-auto">
+        <div class="mr-[12px]">
+           
+            <ul *ngIf="categoryList" class="border-[1px] border-[#ccc] min-w-[270px] pt-[6px]">
+                <li  class="py-[4px] pl-[18px] font-[300] leading-[32px] border-[#cccccc64] w-full border-b-[1px] " (click)="handleSelectedCategory('')"><a
+                    class="flex items-center justify-between cursor-pointer" routerLink='/category/all'><span>Tất cả</span> <fa-icon
+                        class="text-[#929292] mr-[18px]" [icon]="arrowIcon"></fa-icon></a></li>
+                <li *ngFor="let item of categoryList,let i = index" class="py-[4px] pl-[18px] font-[300] leading-[32px] border-[#cccccc64] w-full border-b-[1px] " (click)="handleSelectedCategory(item)"><a
+                        class="flex items-center justify-between cursor-pointer" routerLink='/category/{{item._id}}'><span>{{item.name}}</span> <fa-icon
+                            class="text-[#929292] mr-[18px]" [icon]="arrowIcon"></fa-icon></a></li>
+            </ul>
+        </div>
+       <div class="flex-1">
+        <div >
+            <div class="flex items-center justify-end mb-[50px]">
+                <select (change)="handleSort()" [(ngModel)]="sort" class="px-[12px] py-[12px] mt-[12px] rounded border-[1px] border-gray-600 outline-none" name="" id="">
+                    <option value="">Sắp xếp theo trạng thái</option>
+                    <option value="1">Mới nhất</option>
+                    <option value="2">Cũ nhất</option>
+                    <option value="3">Từ A đến Z</option>
+                    <option value="4">Từ Z đên A</option>
+                    <option value="5">Giá cao nhất</option>
+                    <option value="6">Giá thấp nhất</option>
+                </select>
+            </div>
+            <div>
+                <div *ngIf="productsList" class="grid grid-cols-4 gap-12">
+                    <a routerLink="/product/{{item?._id}}" *ngFor="let item of productsList,let i = index" class=" block hover:shadow-lg hover:shadow-gray-500/50">
+                        <div class="flex justify-center h-[161px] ">
+                            <img  height="100%" src="{{item?.image}}" alt="">                   
+                        </div>
+                        <div class="px-[24px] mt-[24px]">
+                            <h4 class="uppercase text-center">{{item.name}}</h4>
+                            <span>
+                              Tác giả:  {{item?.author}}
+                            </span>
+                            <p >
+                               Giá: <span class="text-red-600">{{item?.price | number }} đ</span> 
+                            </p>
+                        </div>
+                    </a>      
+                  </div>
+            </div>
+        </div>
+       </div>
+    </div>
+    <app-footer-social></app-footer-social>
+    <app-footer />
+
+</div>
