@@ -20,14 +20,14 @@ export class CartComponent {
   cartList: any = null
   productList: any = null
 
-  totalQuantity:number = 0
-  totalPrice:number = 0
+  totalQuantity: number = 0
+  totalPrice: number = 0
 
-  constructor(private cartService: CartService, private orderService: OrderService , private productService: ProductService, private navigate: Router, private toastr: ToastrService,) {
-
+  constructor(private cartService: CartService, private orderService: OrderService, private productService: ProductService, private navigate: Router, private toastr: ToastrService,) {
   }
 
-  handleReset () {
+
+  handleReset() {
     this.totalQuantity = 0
     this.totalPrice = 0
     for (let index = 0; index < this.cartList.cartItems.length; index++) {
@@ -42,7 +42,6 @@ export class CartComponent {
     this.productService.get().subscribe(({ data }) => {
       this.productList = data
     })
-console.log("123",this.user);
 
     if (!this.user) {
       this.navigate.navigate(['/'])
@@ -51,6 +50,8 @@ console.log("123",this.user);
 
     this.cartService.getOne(this.user._id).subscribe(({ data }) => {
       this.cartList = data
+      console.log(this.cartList);
+
       this.handleReset()
     })
   }
@@ -89,9 +90,9 @@ console.log("123",this.user);
 
   }
 
-  handleRemove (id:string) {
+  handleRemove(id: string) {
     this.cartService.delete(id).subscribe((resp) => {
-      this.toastr.success(resp.message,"Chúc mừng")
+      this.toastr.success(resp.message, "Chúc mừng")
       this.cartService.getOne(this.user._id).subscribe(({ data }) => {
         this.cartList = data
         this.handleReset()
@@ -100,6 +101,10 @@ console.log("123",this.user);
   }
 
   handleOrder = () => {
+    if (this.cartList.cartItems.length == 0) {
+      this.toastr.info("Giỏ hàng của bạn đang trống.", "Cảnh báo")
+      return
+    }
     const newOrder = {
       userId: this.user._id,
       phone: this.user.phone,
@@ -111,11 +116,7 @@ console.log("123",this.user);
       this.toastr.success(resp.message)
       this.navigate.navigate(['/'])
     })
+
   }
-
-
-
-
-
 
 }

@@ -25,7 +25,7 @@
           </div>
           <div class="flex flex-col items-end">
             <p class="text-[#66645c] font-[600]"><span>{{item.quantity}}</span> x <span>  {{item.bookId.price / 100 * (100 - item.bookId.discount) | number}}đ</span></p>
-            <fa-icon   (click)="handleRemove(item.bookId._id)" class="text-[#d3d3d3] cursor-pointer text-[16px] hover:text-red-600" [icon]="trashCan" />
+            <fa-icon   (click)="handleRemove(item._id)" class="text-[#d3d3d3] cursor-pointer text-[16px] hover:text-red-600" [icon]="trashCan" />
           </div>
         </div>
       </div>
